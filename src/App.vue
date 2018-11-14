@@ -1,6 +1,33 @@
 <template>
-  <div class="main">
-    hello world
+  <div class="app-container">
+    <header class="header">
+      <h1 class="title"><%= title %></h1>
+      <ul class="type-wrapper">
+        <li data-type="dot">dot</li>
+        <li class="actived" data-type="column">column</li>
+        <li  data-type="circle">circle</li>
+      </ul>
+      <div class="volume-wrapper">
+        Volume <input class="volume" type="range" min="0" max="1" step="0.01" value="0.5">
+      </div>
+    </header>
+    <div class="content">
+      <div class="left">
+        <ul class="list">
+          <% for (let i = 0; i < musicLists.length; i++) { %>
+          <li class="item" title="<%= musicLists[i] %>">
+            <%= musicLists[i] %>
+          </li>
+          <% } %>
+        </ul>
+      </div>
+      <div class="right">
+        <canvas class="canvas">不支持</canvas>
+        <div class="back-img-wrapper">
+          <img class="back-img" alt="image" src="">
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
