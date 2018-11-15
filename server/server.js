@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const fileRouter = require('./file');
@@ -12,6 +13,8 @@ app.use(cookieParser());
 
 app.use('/file', fileRouter);
 
+app.use(express.static(path.join(__dirname, '../public')));
+
 app.listen(9093, function () {
-  console.log('listening at port 9093 ...')
+  console.log('listening at port 9093 ...');
 });

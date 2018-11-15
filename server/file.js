@@ -2,18 +2,20 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const jsmediatags = require('jsmediatags');
-const Router = express.Router();
+const router = express.Router();
 
 const media = path.join(__dirname, '../public/media');
 
-router.get('/', function (req, res) {
+router.get('/songs', function (req, res) {
   fs.readdir(media, function (err, data) {
     if (!err) {
-      const lists = data.map(item => item.slice(0, item.length - 4)); // 去掉 '.mp3' 后缀
+      const list = data.map(item => item.slice(0, item.length - 4)); // 去掉 '.mp3' 后缀
 
-      res.render('index', {
-        title: 'music pulse',
-        musicLists: lists,
+      res.json({
+        code: 0,
+        data: {
+          musicList: list,
+        }
       })
     }
   })
@@ -22,7 +24,12 @@ router.get('/', function (req, res) {
 router.get('/picture', function (req, res) {
   jsmediatags.read(`${media}/${req.query.songName}.mp3`, {
     onSuccess: function (tag) {
-      res.send(tag.tags.picture);
+      res.json({
+        code: 0,
+        data: {
+          picture: tag.tags.picture
+        }
+      });
     },
     onError: function (error) {
       console.log(':(', error.type, error.info);
@@ -30,4 +37,4 @@ router.get('/picture', function (req, res) {
   });
 });
 
-module.exports = Router;
+module.exports = router;

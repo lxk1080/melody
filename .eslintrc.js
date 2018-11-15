@@ -25,9 +25,13 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     // 使eslint验证要有分号
     // 'semi': ['error', 'always'],
+    'semi': [0, 'always'],
+    // 对象最后一个属性值后是否需要逗号
+    'comma-dangle': [0, 'always'],
     // 忽略缩进设置（使用webstorm的默认格式化代码）
     'indent': 0,
     'space-before-function-paren': 0,
-    'no-trailing-spaces': 0
+    'no-trailing-spaces': 0,
+    'padded-blocks': [0, 'always'],
   }
 }
