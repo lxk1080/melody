@@ -122,8 +122,7 @@
         });
       },
       setType(type) {
-        this.currentType = type;
-        this.canvas.setType(type);
+        this.canvas.setType(this.currentType = type);
       },
       setVolume() {
         this.player.setVolume(this.$refs.volume.value);

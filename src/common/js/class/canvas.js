@@ -27,6 +27,9 @@ export default class Canvas {
   setType(type) {
     this.type = type;
 
+    // reset all attrs of canvas
+    this.el.width = this.el.width;
+
     switch (type) {
       case 'column':
         this.setColumn();
