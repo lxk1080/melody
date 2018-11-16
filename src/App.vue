@@ -101,7 +101,7 @@
             this.musicList = res.data.musicList;
           }
         }).catch(err => {
-          console.log('err: ', err);
+          console.log(err);
         })
       },
       playSong(song) {

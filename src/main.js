@@ -3,6 +3,7 @@ import VueResource from 'vue-resource'
 import App from './App'
 import router from './router'
 import Store from './store'
+import 'common/js/config'
 import 'common/stylus/index.styl'
 import fastclick from 'fastclick'
 

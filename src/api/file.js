@@ -23,7 +23,7 @@ export const loadSong = (songName) => {
     cancel('close the last request')
   }
 
-  // 为每一次请求创建一个不同的token
+  // 为每一次请求创建一个不同的token，以及一个对应的cancel
   token = new CancelToken(function executor(c) {
     cancel = c
   })
