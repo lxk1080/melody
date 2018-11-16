@@ -53,17 +53,16 @@
 <script type="text/ecmascript-6">
   import { getSongsList } from './api/file';
   import { ERR_OK } from './api/config';
+  import { AnimationTypes } from './common/js/constants';
   import Player from './common/js/class/player';
   import Canvas from './common/js/class/canvas';
-
-  const types = ['dot', 'column', 'circle'];
 
   export default {
     data() {
       return {
-        types,
+        types: Object.values(AnimationTypes),
         currentSong: '',
-        currentType: types[1],
+        currentType: AnimationTypes.column,
         musicList: [],
         player: null,
         canvas: null,
@@ -81,6 +80,7 @@
 
       this.canvas = new Canvas({
         el: this.$refs.canvasItem,
+        type: this.currentType,
         width: this.$refs.right.clientWidth,
         height: this.$refs.right.clientHeight,
         size: this.player.size,

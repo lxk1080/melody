@@ -1,9 +1,10 @@
 import { random } from '../utils/util';
+import { AnimationTypes } from '../constants';
 
 export default class Canvas {
-  constructor({el, width, height, size}) {
+  constructor({el, type, width, height, size}) {
     this.el = el;
-    this.type = 'column';
+    this.type = type;
     this.caps = new Array(size).fill(0); // 存储每个柱形小帽的高度
     this.dots = []; // type为dot时，每个dot的信息
     this.dotsMode = 'x'; // dot运动模式
@@ -31,10 +32,10 @@ export default class Canvas {
     this.el.width = this.el.width;
 
     switch (type) {
-      case 'column':
+      case AnimationTypes.column:
         this.setColumn();
         break;
-      case 'dot':
+      case AnimationTypes.dot:
         this.createDots();
         break;
     }
@@ -45,10 +46,10 @@ export default class Canvas {
     this.height = this.el.height = height;
 
     switch (this.type) {
-      case 'column':
+      case AnimationTypes.column:
         this.setColumn();
         break;
-      case 'dot':
+      case AnimationTypes.dot:
         this.createDots();
         break;
     }
@@ -79,13 +80,13 @@ export default class Canvas {
   draw(arr) {
     this.ctx.clearRect(0, 0, this.width, this.height);
 
-    if (this.type === 'column') {
+    if (this.type === AnimationTypes.column) {
       this.drawColumn(arr);
 
-    } else if (this.type === 'dot') {
+    } else if (this.type === AnimationTypes.dot) {
       this.drawDot(arr);
 
-    } else if (this.type === 'circle') {
+    } else if (this.type === AnimationTypes.circle) {
       this.drawCircle(arr);
 
     }
