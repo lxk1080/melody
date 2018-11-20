@@ -1,14 +1,32 @@
+import { AnimationTypes } from '../constants';
+
 export default class Column {
-  constructor({ctx, size, width, height}) {
+  constructor({el, ctx, type, size, width, height}) {
+    this.name = AnimationTypes.column;
+    this.el = el;
     this.ctx = ctx;
-    this.caps = new Array(size).fill(0); // 存储每个柱形小帽的高度
+    this.type = type;
+    this.size = size;
     this.width = width;
     this.height = height;
+    this.caps = new Array(size).fill(0); // 存储每个柱形小帽的高度
 
     this.init();
   }
 
   init() {
+    // 这个函数为动画设置初始的canvas属性
+    this.initCanvas();
+  }
+
+  resize({width, height}) {
+    this.width = this.el.width = width;
+    this.height = this.el.height = height;
+
+    this.initCanvas();
+  }
+
+  initCanvas() {
     const line = this.ctx.createLinearGradient(0, 0, 0, this.height);
     line.addColorStop(0, 'red');
     line.addColorStop(0.5, 'yellow');
