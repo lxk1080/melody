@@ -17,8 +17,8 @@ export default class Canvas {
     this.width = this.el.width = width;
     this.height = this.el.height = height;
 
-    this.animation = {};
     this.ctx = this.el.getContext('2d');
+    this.animation = {};
 
     this.createAnimation(type);
   }

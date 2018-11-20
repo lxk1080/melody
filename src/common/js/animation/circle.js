@@ -24,8 +24,13 @@ export default class Circle {
 
     const x = this.width / 2;
     const y = this.height / 2;
-    const baseR = 100;
-    const minR = 200;
+
+    const baseNum = Math.min(this.width, this.height);
+
+    // const minR = 200;
+    const minR = (baseNum / 2) * (3 / 4);
+    // const baseR = 100;
+    const baseR = (baseNum / 2) * (1 / 4);
 
     const angle = 360 / len;
     const size = 6;
