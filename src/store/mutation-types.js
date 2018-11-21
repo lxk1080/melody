@@ -1,1 +1,1 @@
-
+export const SET_ANIMATION_TYPE = 'SET_ANIMATION_TYPE';

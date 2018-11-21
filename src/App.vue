@@ -6,7 +6,7 @@
         <li
           v-for="type in types"
           :data-type="type"
-          :class="{ actived: currentType === type }"
+          :class="{ actived: animationType === type }"
           @click="setType(type)"
         >
           {{ type }}
@@ -53,16 +53,16 @@
 <script type="text/ecmascript-6">
   import { getSongsList } from './api/file';
   import { ERR_OK } from './api/config';
-  import { AnimationTypes } from './common/js/constants';
+  import { animationTypes } from './common/js/constants';
   import Player from './common/js/class/player';
   import Canvas from './common/js/class/canvas';
+  import { mapGetters, mapMutations } from 'vuex';
 
   export default {
     data() {
       return {
-        types: Object.values(AnimationTypes),
+        types: Object.values(animationTypes),
         currentSong: '',
-        currentType: AnimationTypes.column,
         musicList: [],
         player: null,
         canvas: null,
@@ -80,7 +80,7 @@
 
       this.canvas = new Canvas({
         el: this.$refs.canvasItem,
-        type: this.currentType,
+        type: this.animationType,
         width: this.$refs.right.clientWidth,
         height: this.$refs.right.clientHeight,
         size: this.player.size,
@@ -94,7 +94,15 @@
         });
       });
     },
+    computed: {
+      ...mapGetters([
+        'animationType',
+      ])
+    },
     methods: {
+      ...mapMutations({
+        setAnimationType: 'SET_ANIMATION_TYPE',
+      }),
       _getSongsList() {
         getSongsList().then(res => {
           if (res.code === ERR_OK) {
@@ -122,7 +130,8 @@
         });
       },
       setType(type) {
-        this.canvas.setType(this.currentType = type);
+        this.setAnimationType(type);
+        this.canvas.reRender(type);
       },
       setVolume() {
         this.player.setVolume(this.$refs.volume.value);

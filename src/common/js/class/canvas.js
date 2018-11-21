@@ -1,57 +1,65 @@
-import { AnimationTypes } from '../constants';
+import { animationTypes } from '../constants';
 import Column from '../animation/column';
 import Dot from '../animation/dot';
 import Circle from '../animation/circle';
+import $store from '../../../store';
 
 const mapClasses = {
-  [AnimationTypes.column]: Column,
-  [AnimationTypes.dot]: Dot,
-  [AnimationTypes.circle]: Circle,
+  [animationTypes.column]: Column,
+  [animationTypes.dot]: Dot,
+  [animationTypes.circle]: Circle,
 }
 
 export default class Canvas {
   constructor({el, type, size, width, height}) {
     this.el = el;
-    this.type = type;
+    this.ctx = this.el.getContext('2d');
     this.size = size; // frequencyBinCount的大小
     this.width = this.el.width = width;
     this.height = this.el.height = height;
-
-    this.ctx = this.el.getContext('2d');
     this.animation = {};
 
     this.createAnimation(type);
   }
 
-  createAnimation(type) {
-    this.type = type;
+  createAnimation() {
+    const type = $store.getters.animationType;
 
     if (!this.animation[type]) {
-      this.animation[type] = new mapClasses[type]({ ...this });
+      this.animation[type] = new mapClasses[type]({
+        el: this.el,
+        ctx: this.ctx,
+        size: this.size,
+        width: this.width,
+        height: this.height,
+      });
     }
 
     this.animation[type].init();
   }
 
-  setType(type) {
+  reRender(type) {
     // reset all attrs of canvas
     this.el.width = this.el.width;
 
-    this.createAnimation(type);
+    this.createAnimation();
   }
 
   resize({width, height}) {
+    const type = $store.getters.animationType;
+
     this.width = this.el.width = width;
     this.height = this.el.height = height;
 
-    if (typeof this.animation[this.type].resize === 'function') {
-      this.animation[this.type].resize({width, height});
+    if (typeof this.animation[type].resize === 'function') {
+      this.animation[type].resize({width, height});
     }
   }
 
   draw(arr) {
-    this.ctx.clearRect(0, 0, this.width, this.height);
+    const type = $store.getters.animationType;
 
-    this.animation[this.type].draw(arr);
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    this.animation[type].draw(arr);
   }
 }

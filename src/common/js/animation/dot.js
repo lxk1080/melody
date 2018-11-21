@@ -1,24 +1,24 @@
-import { AnimationTypes } from '../constants';
+import { animationTypes } from '../constants';
 import { random } from '../utils/util';
+import $store from '../../../store';
 
 export default class Dot {
   constructor({el, ctx, type, size, width, height}) {
-    this.name = AnimationTypes.dot;
+    this.name = animationTypes.dot;
     this.el = el;
     this.ctx = ctx;
-    this.type = type;
     this.size = size;
     this.width = width;
     this.height = height;
     this.dots = []; // 每个dot的信息
     this.dotsMode = 'x'; // dot运动模式
 
+    // 初始化事件，这个函数直执行一次
+    this.initEvent();
     this.init();
   }
 
   init() {
-    // 初始化事件
-    this.initEvent();
     // 创建点信息
     this.createDots();
   }
@@ -32,7 +32,7 @@ export default class Dot {
 
   initEvent() {
     this.el.addEventListener('click', () => {
-      if (this.type !== this.name) return;
+      if ($store.getters.animationType !== this.name) return;
       this.dotsMode = this.dotsMode === 'x' ? 'xy' : 'x';
     })
   }

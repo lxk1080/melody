@@ -1,11 +1,10 @@
-import { AnimationTypes } from '../constants';
+import { animationTypes } from '../constants';
 
 export default class Column {
   constructor({el, ctx, type, size, width, height}) {
-    this.name = AnimationTypes.column;
+    this.name = animationTypes.column;
     this.el = el;
     this.ctx = ctx;
-    this.type = type;
     this.size = size;
     this.width = width;
     this.height = height;
@@ -15,7 +14,7 @@ export default class Column {
   }
 
   init() {
-    // 这个函数为动画设置初始的canvas属性
+    // 为动画设置初始的canvas属性
     this.initCanvas();
   }
 

@@ -1,11 +1,10 @@
-import { AnimationTypes } from '../constants';
+import { animationTypes } from '../constants';
 
 export default class Circle {
   constructor({el, ctx, type, size, width, height}) {
-    this.name = AnimationTypes.column;
+    this.name = animationTypes.column;
     this.el = el;
     this.ctx = ctx;
-    this.type = type;
     this.size = size;
     this.width = width;
     this.height = height;
