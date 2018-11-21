@@ -80,7 +80,6 @@
 
       this.canvas = new Canvas({
         el: this.$refs.canvasItem,
-        type: this.animationType,
         width: this.$refs.right.clientWidth,
         height: this.$refs.right.clientHeight,
         size: this.player.size,
