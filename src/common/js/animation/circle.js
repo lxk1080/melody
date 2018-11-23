@@ -65,5 +65,7 @@ export default class Circle {
     ctx.arc(x, y, minR - size, 0, 360 * deg, false);
     ctx.fill();
     ctx.restore();
+
+    // 这里可以将圆形渲染到canvas上
   }
 }

@@ -43,7 +43,10 @@
       <div class="right" ref="right">
         <canvas class="canvas" ref="canvasItem">不支持</canvas>
         <div class="back-img-wrapper">
-          <img class="back-img" ref="backImg" alt="image" src="">
+          <img class="back-img" ref="backImg" alt="back-image" src="" />
+        </div>
+        <div class="cd-img-wrapper" v-show="animationType === animationTypes.circle">
+          <img class="cd-image play" ref="cdImg" alt="cd-image" src="" />
         </div>
       </div>
     </div>
@@ -66,6 +69,8 @@
         musicList: [],
         player: null,
         canvas: null,
+        // 数值 6 是通过 circle 类的 size 得来的
+        minR: (Math.min(this.$refs.right.width, this.$refs.right.height) / 2) * (3 / 4) - 6,
       }
     },
     created() {
@@ -76,6 +81,7 @@
         currentSong: null,
         volume: this.$refs.volume.value,
         imageItem: this.$refs.backImg,
+        cdImage: this.$refs.cdImg,
       });
 
       this.canvas = new Canvas({
@@ -222,4 +228,15 @@
             height 100%
             filter blur(30px)
             opacity .3
+        .cd-img-wrapper
+          border-radius 50%
+          position absolute
+          &.play
+            animation: rotate 20s linear infinite
+
+  @keyframes rotate
+    0%
+      transform: rotate(0)
+    100%
+      transform: rotate(360deg)
 </style>
