@@ -38,7 +38,7 @@ export default class Canvas {
     this.animation[type].init();
   }
 
-  reRender(type) {
+  reRender() {
     // reset all attrs of canvas
     this.el.width = this.el.width;
 

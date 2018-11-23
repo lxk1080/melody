@@ -130,7 +130,7 @@
       },
       setType(type) {
         this.setAnimationType(type);
-        this.canvas.reRender(type);
+        this.canvas.reRender();
       },
       setVolume() {
         this.player.setVolume(this.$refs.volume.value);
