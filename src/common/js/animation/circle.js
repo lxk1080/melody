@@ -67,5 +67,30 @@ export default class Circle {
     ctx.restore();
 
     // 这里可以将圆形渲染到canvas上
+    const cdCanvas = document.createElement('canvas');
+    const cdCtx = cdCanvas.getContext('2d');
+    const img = new Image();
+
+    img.onload = () => {
+      cdCtx.drawImage(img, 0, 0, cdCanvas.width, cdCanvas.height);
+    };
+
+    img.src = '';
+
+    const style = {
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      transform: 'translate3d(-50%, -50%, 0)',
+      width: `${minR - size}px`,
+      height: `${minR - size}px`,
+      borderRadius: '50%',
+    };
+
+    for (let [key, value] of Object.entries(style)) {
+      cdCanvas.style[key] = value;
+    }
+
+    const parent = this.el.parentNode();
   }
 }

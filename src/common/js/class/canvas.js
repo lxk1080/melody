@@ -8,7 +8,7 @@ const mapClasses = {
   [animationTypes.column]: Column,
   [animationTypes.dot]: Dot,
   [animationTypes.circle]: Circle,
-}
+};
 
 export default class Canvas {
   constructor({el, type, size, width, height}) {

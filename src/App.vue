@@ -6,7 +6,7 @@
         <li
           v-for="type in types"
           :data-type="type"
-          :class="{ actived: animationType === type }"
+          :class="{ actived: type === animationType }"
           @click="setType(type)"
         >
           {{ type }}
@@ -45,9 +45,6 @@
         <div class="back-img-wrapper">
           <img class="back-img" ref="backImg" alt="back-image" src="" />
         </div>
-        <div class="cd-img-wrapper" v-show="animationType === animationTypes.circle">
-          <img class="cd-image play" ref="cdImg" alt="cd-image" src="" />
-        </div>
       </div>
     </div>
   </div>
@@ -65,12 +62,9 @@
     data() {
       return {
         types: Object.values(animationTypes),
-        currentSong: '',
         musicList: [],
         player: null,
         canvas: null,
-        // 数值 6 是通过 circle 类中 draw 方法的常量 size 得来的
-        minR: (Math.min(this.$refs.right.width, this.$refs.right.height) / 2) * (3 / 4) - 6,
       }
     },
     created() {
@@ -81,7 +75,6 @@
         currentSong: null,
         volume: this.$refs.volume.value,
         imageItem: this.$refs.backImg,
-        cdImage: this.$refs.cdImg,
       });
 
       this.canvas = new Canvas({
@@ -102,11 +95,13 @@
     computed: {
       ...mapGetters([
         'animationType',
+        'currentSong',
       ])
     },
     methods: {
       ...mapMutations({
         setAnimationType: 'SET_ANIMATION_TYPE',
+        setCurrentSong: 'SET_CURRENT_SONG',
       }),
       _getSongsList() {
         getSongsList().then(res => {
@@ -118,7 +113,7 @@
         })
       },
       playSong(song) {
-        this.currentSong = song;
+        this.setCurrentSong(song);
 
         const player = this.player;
 
@@ -228,11 +223,6 @@
             height 100%
             filter blur(30px)
             opacity .3
-        .cd-img-wrapper
-          border-radius 50%
-          position absolute
-          &.play
-            animation: rotate 20s linear infinite
 
   @keyframes rotate
     0%

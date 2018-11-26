@@ -6,9 +6,9 @@ import * as actions from './actions'
 import * as getters from './getters'
 import createLogger from 'vuex/dist/logger'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-const debug = process.env.NODE_ENV !== 'production' // 在开发模式下执行debug，生产环境下停用
+const debug = process.env.NODE_ENV !== 'production'; // 在开发模式下执行debug，生产环境下停用
 
 const store = new Vuex.Store({
   state,
@@ -17,7 +17,7 @@ const store = new Vuex.Store({
   getters,
 
   strict: debug, // 在严格模式下，无论何时发生了状态变更且不是由 mutation 函数引起的，将会抛出错误
-  plugins: debug ? [createLogger()] : []  // 打印出某一个状态改变的日志
-})
+  plugins: debug ? [createLogger()] : [],  // 打印出某一个状态改变的日志
+});
 
 export default store;

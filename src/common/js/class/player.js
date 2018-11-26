@@ -61,6 +61,10 @@ export default class Player {
     const songData = await loadSong(songName);
     const image = await getSongPic(songName);
 
+    if (songData && image) {
+      // indexDB
+    }
+
     // 在songData未获得时，可能切歌了，这里判断
     if (n !== self.count) return;
 
