@@ -69,7 +69,7 @@
         musicList: [],
         player: null,
         canvas: null,
-        // 数值 6 是通过 circle 类的 size 得来的
+        // 数值 6 是通过 circle 类中 draw 方法的常量 size 得来的
         minR: (Math.min(this.$refs.right.width, this.$refs.right.height) / 2) * (3 / 4) - 6,
       }
     },
