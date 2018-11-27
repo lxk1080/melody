@@ -1,4 +1,8 @@
 import { animationTypes } from '../constants';
+import $store from '../../../store';
+import { getSongPic, loadSong } from '../../../api/file';
+import { addData, getDataByCursor } from '../indexdb';
+import { guid } from '../utils/util';
 
 export default class Circle {
   constructor({el, ctx, type, size, width, height}) {
@@ -8,12 +12,22 @@ export default class Circle {
     this.size = size;
     this.width = width;
     this.height = height;
+    this.songName = null;
+    this.isRender = false;
 
     this.init();
   }
 
   init() {
     // do something here
+  }
+
+  showImage(dom, image) {
+    let base64String = '';
+    for (let i = 0; i < image.data.length; i++) {
+      base64String += String.fromCharCode(image.data[i]);
+    }
+    dom.src = `data:${image.format};base64,${window.btoa(base64String)}`;
   }
 
   draw(arr) {
@@ -67,30 +81,50 @@ export default class Circle {
     ctx.restore();
 
     // 这里可以将圆形渲染到canvas上
-    const cdCanvas = document.createElement('canvas');
-    const cdCtx = cdCanvas.getContext('2d');
-    const img = new Image();
+    if (!this.isRender || this.songName !== $store.getters.currentSong) {
+      const cdCanvas = document.createElement('canvas');
+      const cdCtx = cdCanvas.getContext('2d');
+      const songName = $store.getters.currentSong;
+      const img = new Image();
 
-    img.onload = () => {
-      cdCtx.drawImage(img, 0, 0, cdCanvas.width, cdCanvas.height);
-    };
+      img.onload = () => {
+        cdCtx.drawImage(img, 0, 0, cdCanvas.width, cdCanvas.height);
+      };
 
-    img.src = '';
+      getDataByCursor('song', { songName }).then(async res => {
+        if (!res) {
+          // 从后台获得歌曲arraybuffer数据
+          const songData = await loadSong(songName);
+          const songPic = await getSongPic(songName);
 
-    const style = {
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-      transform: 'translate3d(-50%, -50%, 0)',
-      width: `${minR - size}px`,
-      height: `${minR - size}px`,
-      borderRadius: '50%',
-    };
+          this.showImage(img, songPic);
 
-    for (let [key, value] of Object.entries(style)) {
-      cdCanvas.style[key] = value;
+          if (songData && songPic) {
+            addData('song', {id: guid(), songName, songData, songPic});
+          }
+        } else {
+          this.showImage(img, res.songPic);
+        }
+      })
+
+      const style = {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate3d(-50%, -50%, 0)',
+        width: `${(minR - size) * 2 - 20}px`,
+        height: `${(minR - size) * 2 - 20}px`,
+        borderRadius: '50%',
+      };
+
+      for (let [key, value] of Object.entries(style)) {
+        cdCanvas.style[key] = value;
+      }
+
+      this.el.parentNode.appendChild(cdCanvas);
+
+      this.songName = songName;
+      this.isRender = true;
     }
-
-    const parent = this.el.parentNode();
   }
 }

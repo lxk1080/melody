@@ -35,7 +35,7 @@ export function random(m, n) {
  * 一个洗牌函数
  * @param arr
  */
-export function shuffle (arr) {
+export function shuffle(arr) {
   let newArr = arr.slice();
   for (let i = 0; i < newArr.length; i++) {
     let j = random(0, i);
@@ -44,4 +44,16 @@ export function shuffle (arr) {
     newArr[j] = tmp;
   }
   return newArr;
+}
+
+/**
+ * 生成guid唯一性标识
+ * @returns {string}
+ */
+export function guid() {
+  function S4() {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+  }
+
+  return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4());
 }

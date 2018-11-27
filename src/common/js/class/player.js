@@ -1,4 +1,6 @@
 import { loadSong, getSongPic } from '../../../api/file';
+import { addData, getDataByCursor } from '../indexdb';
+import { guid } from '../utils/util';
 
 export default class Player {
   constructor({currentSong, volume, imageItem}) {
@@ -49,6 +51,8 @@ export default class Player {
 
   async playSong(songName) {
     const self = this;
+    let songData;
+    let songPic;
 
     // 如果在load或decodeAudioData未完成时切歌( n 是局部变量，this.count 是全局的)， n !== this.count
     const n = ++self.count;
@@ -57,13 +61,21 @@ export default class Player {
     const source = this.getSource();
     source && source[source.stop ? 'stop' : 'noteOff']();
 
-    // 从后台获得歌曲arraybuffer数据
-    const songData = await loadSong(songName);
-    const image = await getSongPic(songName);
+    // 从缓存中读取数据，没有则向后台请求后缓存起来
+    await getDataByCursor('song', { songName }).then(async res => {
+      if (!res) {
+        // 从后台获得歌曲arraybuffer数据
+        songData = await loadSong(songName);
+        songPic = await getSongPic(songName);
 
-    if (songData && image) {
-      // indexDB
-    }
+        if (songData && songPic) {
+          addData('song', {id: guid(), songName, songData, songPic});
+        }
+      } else {
+        songData = res.songData;
+        songPic = res.songPic;
+      }
+    })
 
     // 在songData未获得时，可能切歌了，这里判断
     if (n !== self.count) return;
@@ -83,7 +95,7 @@ export default class Player {
       bufferSource[bufferSource.start ? 'start' : 'noteOn'](0); // 当前时间+0秒后播放
 
       // 显示封面
-      self.showImage(image);
+      self.showImage(songPic);
 
       // 记录当前的source
       self.setSource(bufferSource);
