@@ -185,20 +185,20 @@
         font-size 22px
         font-weight 500
       .type-wrapper
-        display flex
-        margin 10px auto
-        width 180px
+        display inline-flex
+        margin 5px auto 10px
         height 40px
         border $color-666 solid 1px
         border-radius 10px
         color $color-ccc
         overflow hidden
         li
-          flex 1
+          flex 0 0 80px
           line-height 36px
           list-style none
           text-align center
           cursor pointer
+          width 80px
           &:not(:last-child)
             border-right $color-666 solid 1px
           &.actived

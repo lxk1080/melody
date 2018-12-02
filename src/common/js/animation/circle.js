@@ -1,5 +1,4 @@
 import { animationTypes } from '../constants';
-import $store from '../../../store';
 
 export default class Circle {
   constructor({el, ctx, size, width, height}) {
@@ -9,8 +8,6 @@ export default class Circle {
     this.size = size;
     this.width = width;
     this.height = height;
-    this.songName = null;
-    this.isRender = false;
 
     this.init();
   }
@@ -81,10 +78,5 @@ export default class Circle {
     ctx.arc(x, y, minR - size, 0, 360 * deg, false);
     ctx.fill();
     ctx.restore();
-
-    // 这里可以将cd渲染起来
-    if (!this.isRender || this.songName !== $store.getters.currentSong) {
-      // ...
-    }
   }
 }
