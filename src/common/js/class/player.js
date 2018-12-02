@@ -3,10 +3,11 @@ import { addData, getDataByCursor } from '../indexdb';
 import { guid } from '../utils/util';
 
 export default class Player {
-  constructor({currentSong, volume, imageItem}) {
+  constructor({currentSong, volume, imageItem, cdImg}) {
     this.currentSong = currentSong;
     this.volume = volume;
     this.imageItem = imageItem;
+    this.cdImg = cdImg;
     this.source = null;
     this.ac = null;
     this.gainNode = null;
@@ -113,8 +114,13 @@ export default class Player {
     for (let i = 0; i < image.data.length; i++) {
       base64String += String.fromCharCode(image.data[i]);
     }
+
+    // 背景
     this.imageItem.src = `data:${image.format};base64,${window.btoa(base64String)}`;
     this.imageItem.style.display = 'block';
+
+    // cd
+    this.cdImg.src = `data:${image.format};base64,${window.btoa(base64String)}`;
   }
 
   visualizer(canvas) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" ref="appContainer">
     <header class="header">
       <h1 class="title">melody</h1>
       <ul class="type-wrapper">
@@ -45,6 +45,9 @@
         <div class="back-img-wrapper">
           <img class="back-img" ref="backImg" alt="back-image" src="" />
         </div>
+        <div class="cd-img-wrapper play" ref="cdWrapper" :style="isShowCd">
+          <img class="cd-img" ref="cdImg" alt="cd-image" src="" />
+        </div>
       </div>
     </div>
   </div>
@@ -65,6 +68,7 @@
         musicList: [],
         player: null,
         canvas: null,
+        showCds: [animationTypes.circle],
       }
     },
     created() {
@@ -75,6 +79,7 @@
         currentSong: null,
         volume: this.$refs.volume.value,
         imageItem: this.$refs.backImg,
+        cdImg: this.$refs.cdImg,
       });
 
       this.canvas = new Canvas({
@@ -86,17 +91,30 @@
 
       // resize时重置canvas画布的大小
       window.addEventListener('resize', () => {
-        this.canvas.resize({
-          width: this.$refs.right.clientWidth,
-          height: this.$refs.right.clientHeight,
-        });
+        const width = this.$refs.right.clientWidth;
+        const height = this.$refs.right.clientHeight;
+
+        if (this.$refs.appContainer.clientWidth >= 1000) {
+          this.setCdWidth(width, height);
+
+          this.canvas.resize({
+            width: this.$refs.right.clientWidth,
+            height: this.$refs.right.clientHeight,
+          });
+        }
       });
+
+      // 设置cd的大小
+      this.setCdWidth(this.$refs.right.clientWidth, this.$refs.right.clientHeight);
     },
     computed: {
       ...mapGetters([
         'animationType',
         'currentSong',
-      ])
+      ]),
+      isShowCd() {
+        return this.showCds.includes(this.animationType) ? { zIndex: 1 } : { zIndex: -1 };
+      }
     },
     methods: {
       ...mapMutations({
@@ -135,6 +153,11 @@
       },
       setVolume() {
         this.player.setVolume(this.$refs.volume.value);
+      },
+      setCdWidth(w, h) {
+        const size = ((Math.min(w, h) / 2) * (3 / 4) - 6) * 2 - 40;
+        this.$refs.cdWrapper.style.width = `${size}px`;
+        this.$refs.cdWrapper.style.height = `${size}px`;
       }
     }
   }
@@ -147,7 +170,9 @@
     display: flex
     flex-direction: column
     width 100%
+    min-width 1000px
     height 100%
+    min-height 400px
     background: $color-222
     color: $color-ccc
     .header
@@ -223,10 +248,25 @@
             height 100%
             filter blur(30px)
             opacity .3
+        .cd-img-wrapper
+          position absolute
+          left 50%
+          top 50%
+          border-radius 50%
+          border $color-opacity-01 solid 10px
+          overflow hidden
+          z-index -1
+          &.play
+            animation rotate 20s linear infinite
+          .cd-img
+            width 100%
+            height 100%
+            border-radius 50%
+            object-fit cover
 
   @keyframes rotate
     0%
-      transform: rotate(0)
+      transform: translate3d(-50%, -50%, 0) rotate(0)
     100%
-      transform: rotate(360deg)
+      transform: translate3d(-50%, -50%, 0) rotate(360deg)
 </style>
